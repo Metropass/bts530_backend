@@ -1,15 +1,23 @@
-from flask import Flask
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 import db
+import json
 
 app = Flask("__name__")
 CORS(app)
 
 
-@app.route('/api', methods=["GET","POST"])
+@app.route('/signup', methods=["POST"])
 def get_post():
-    db.db.user_info.insert_one({"_id": "meme_man"})
+    if request.method == "POST":
+        print("inside POST")
+        sign_up = request.json
+        print(sign_up)
+        print(sign_up['firstName'])
+
+        if sign_up:
+            db.db.user_info.insert_one(sign_up)
     return "Database Insertion Complete!"
 
 
@@ -25,10 +33,9 @@ def find():
     return "Finished Finding Data!"
 
 
-@app.route('/api/update',methods=["GET","POST"])
-def update():
 
 
 
-if __name__=='__main__':
-    app.run(port=8000)
+
+if __name__== '__main__':
+    app.run(port=5000)
